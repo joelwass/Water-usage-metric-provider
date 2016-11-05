@@ -7,13 +7,11 @@ var request = require('supertest');
 var should = require('should');
 var _ = require('lodash');
 var uuid = require('node-uuid');
-var helper = require('./helper');
+var server = require('../app.js');
 
 describe('Device', function () {
-  var server;
 
   before((done) => {
-    server = helper.startServer();
     done();
   });
 
@@ -86,6 +84,7 @@ describe('Device', function () {
       .send(newDevice)
       .end(function (err, res) {
         var json = JSON.parse(res.text);
+        console.log(json);
         res.status.should.equal(200);
         json.success.should.equal(true);
         json.results.usageOfDeviceTotal.should.equal(3.0);

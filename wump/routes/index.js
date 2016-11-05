@@ -1,5 +1,6 @@
 var express = require('express');
 var router = express.Router();
+var controllers = require('../api/controllers');
 
 /* GET splash page. */
 router.get('/', function(req, res, next) {
@@ -7,7 +8,7 @@ router.get('/', function(req, res, next) {
 });
 
 /* User routes */
-router.route('/api/v1/users/')
+router.route('/api/v1/user/')
   .post(controllers.user.createUser)
   .delete(controllers.user.deleteUser);
 

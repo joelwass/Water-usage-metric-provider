@@ -91,7 +91,7 @@ module.exports = {
       .then(function (localDevice) {
 
         return res.status(200).json({ success: true,
-            result: localDevice.toJSON()
+            results: localDevice.toJSON()
           });
 
       })
@@ -197,7 +197,7 @@ module.exports = {
         return res.status(200).json({ success: true });
       })
       .catch(function (err) {
-        return res.status(400).json({ success: false message: err });
+        return res.status(400).json({ success: false, message: err });
       });
   },
 };

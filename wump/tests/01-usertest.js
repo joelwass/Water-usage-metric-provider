@@ -34,8 +34,9 @@ describe('User', function () {
       .expect('Content-Type', /json/)
       .send(reqBody)
       .end(function (err, res) {
-        res.status.should.equal(200);
         var json = JSON.parse(res.text);
+        console.log(json);
+        res.status.should.equal(200);
         json.success.should.equal(true);
         json.results.email.should.equal(userEmail);
         done();
@@ -71,12 +72,14 @@ describe('User', function () {
     };
 
     request(server)
-      .get('/api/v1/user')
+      .post('/api/v1/login')
       .expect('Content-Type', /json/)
       .send(reqBody)
       .end(function (err, res) {
-        res.status.should.equal(200);
         var json = JSON.parse(res.text);
+        console.log(json);
+        res.status.should.equal(200);
+
         json.success.should.equal(true);
         auth = res.headers.auth;
         should.exist(auth);
@@ -93,7 +96,7 @@ describe('User', function () {
     };
 
     request(server)
-      .get('/api/v1/user')
+      .post('/api/v1/login')
       .expect('Content-Type', /json/)
       .send(reqBody)
       .end(function (err, res) {
