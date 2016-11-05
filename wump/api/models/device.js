@@ -27,7 +27,29 @@ module.exports = function (sequelize, DataTypes) {
     },
   }, {
     classMethods: {
+      createNewDevice: function(body) {
 
+        return Device.create(body);
+      },
+
+      getAllDevicesForUser: function(body) {
+
+        var params = { where: { 'user_id': body.user_id }};
+
+        return Device.findAll(params);
+      },
+
+      updateDeviceById: function(body) {
+
+        var device = Device.find({ where: { 'id': body.id }});
+        return device.save(body);
+      },
+
+      deleteDeviceById: function(body) {
+
+        var params = { where: { id: body.id }};
+        return Device.destroy(params);
+      }
     },
     instanceMethods: {
 

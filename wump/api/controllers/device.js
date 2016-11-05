@@ -199,5 +199,5 @@ module.exports = {
       .catch(function (err) {
         return res.status(400).json({ success: false message: err });
       });
-  }
+  },
 };
