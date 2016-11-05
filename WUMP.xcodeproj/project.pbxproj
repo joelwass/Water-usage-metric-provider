@@ -12,6 +12,7 @@
 		180718A61DCE775000F8592F /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 180718A41DCE775000F8592F /* Main.storyboard */; };
 		180718A81DCE775000F8592F /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 180718A71DCE775000F8592F /* Assets.xcassets */; };
 		180718AB1DCE775000F8592F /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 180718A91DCE775000F8592F /* LaunchScreen.storyboard */; };
+		B9897B7F29F8EE355B227F0F /* Pods_WUMP.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 838A1B8A29D9042C0097EEF3 /* Pods_WUMP.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -22,6 +23,9 @@
 		180718A71DCE775000F8592F /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		180718AA1DCE775000F8592F /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		180718AC1DCE775000F8592F /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		701A0DC5A5D819C3DF124076 /* Pods-WUMP.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-WUMP.release.xcconfig"; path = "Pods/Target Support Files/Pods-WUMP/Pods-WUMP.release.xcconfig"; sourceTree = "<group>"; };
+		838A1B8A29D9042C0097EEF3 /* Pods_WUMP.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_WUMP.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		CCE70A5625794366AF5EEA20 /* Pods-WUMP.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-WUMP.debug.xcconfig"; path = "Pods/Target Support Files/Pods-WUMP/Pods-WUMP.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -29,6 +33,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				B9897B7F29F8EE355B227F0F /* Pods_WUMP.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -40,6 +45,8 @@
 			children = (
 				1807189F1DCE775000F8592F /* WUMP */,
 				1807189E1DCE775000F8592F /* Products */,
+				4916B7FDB53435C83ACFE3AE /* Pods */,
+				B05FD0C9A979EF5C0F406D9F /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -64,6 +71,23 @@
 			path = WUMP;
 			sourceTree = "<group>";
 		};
+		4916B7FDB53435C83ACFE3AE /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				CCE70A5625794366AF5EEA20 /* Pods-WUMP.debug.xcconfig */,
+				701A0DC5A5D819C3DF124076 /* Pods-WUMP.release.xcconfig */,
+			);
+			name = Pods;
+			sourceTree = "<group>";
+		};
+		B05FD0C9A979EF5C0F406D9F /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				838A1B8A29D9042C0097EEF3 /* Pods_WUMP.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -71,9 +95,12 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 180718AF1DCE775000F8592F /* Build configuration list for PBXNativeTarget "WUMP" */;
 			buildPhases = (
+				86813489000734FA2DC5E8BE /* [CP] Check Pods Manifest.lock */,
 				180718991DCE775000F8592F /* Sources */,
 				1807189A1DCE775000F8592F /* Frameworks */,
 				1807189B1DCE775000F8592F /* Resources */,
+				3BD2440A5ED9E9D8B8B7FEEE /* [CP] Embed Pods Frameworks */,
+				145B680F841BBB0C9F900C13 /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -131,6 +158,54 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		145B680F841BBB0C9F900C13 /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Copy Pods Resources";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-WUMP/Pods-WUMP-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		3BD2440A5ED9E9D8B8B7FEEE /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-WUMP/Pods-WUMP-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		86813489000734FA2DC5E8BE /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\nEOM\n    exit 1\nfi\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		180718991DCE775000F8592F /* Sources */ = {
@@ -259,6 +334,7 @@
 		};
 		180718B01DCE775000F8592F /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = CCE70A5625794366AF5EEA20 /* Pods-WUMP.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				DEVELOPMENT_TEAM = 6KKRC5GQMV;
@@ -272,6 +348,7 @@
 		};
 		180718B11DCE775000F8592F /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 701A0DC5A5D819C3DF124076 /* Pods-WUMP.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				DEVELOPMENT_TEAM = 6KKRC5GQMV;

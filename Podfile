@@ -6,5 +6,5 @@ target 'WUMP' do
   use_frameworks!
 
   # Pods for WUMP
-
+pod 'ScrollableGraphView'
 end
