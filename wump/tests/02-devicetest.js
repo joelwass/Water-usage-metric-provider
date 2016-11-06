@@ -98,9 +98,8 @@ describe('Device', function () {
     };
 
     request(server)
-      .get('/api/v1/device/today/')
+      .get('/api/v1/device/today/'+device.serialNumber)
       .expect('Content-Type', /json/)
-      .send(newDevice)
       .end(function (err, res) {
         var json = JSON.parse(res.text);
         console.log(json);
@@ -118,9 +117,8 @@ describe('Device', function () {
     };
 
     request(server)
-      .get('/api/v1/device/history/')
+      .get('/api/v1/device/history/'+device.serialNumber)
       .expect('Content-Type', /json/)
-      .send(newDevice)
       .end(function (err, res) {
         var json = JSON.parse(res.text);
         res.status.should.equal(200);

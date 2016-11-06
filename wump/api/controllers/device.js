@@ -91,14 +91,14 @@ module.exports = {
   },
 
   getDeviceAmountHistory: function(req, res, next) {
-    var body = _.pick(req.body, ['serialNumber']);
+    var body = _.pick(req.params, ['serialNumber']);
     if (_.keys(body).length != 1
       || (typeof body.serialNumber != 'string')
     ) {
       return res.status(400).json({ success: false, message: helper.strings.InvalidParameters });
     }
 
-    model.Transaction.getHistoricalData(req.body)
+    model.Transaction.getHistoricalData(body)
       .then(function (localHistory) {
         var newResults = [];
         var currentIndex = 0;
@@ -130,14 +130,14 @@ module.exports = {
   },
 
   getTodayDataAmountDevice: function(req, res, next) {
-    var body = _.pick(req.body, ['serialNumber']);
+    var body = _.pick(req.params, ['serialNumber']);
     if (_.keys(body).length != 1
       || (typeof body.serialNumber != 'string')
     ) {
       return res.status(400).json({ success: false, message: helper.strings.InvalidParameters });
     }
 
-    model.Transaction.getTodayDataAmount(req.body)
+    model.Transaction.getTodayDataAmount(body)
       .then(function (localToday) {
         return res.status(200).json({ success: true, results: localToday });
       })

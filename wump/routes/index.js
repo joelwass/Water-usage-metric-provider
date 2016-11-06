@@ -24,10 +24,10 @@ router.route('/api/v1/device/transaction/')
   .post(controllers.device.addDeviceTransaction)
   .delete(controllers.device.deleteTransactionFromDevice);
 
-router.route('/api/v1/device/today/')
+router.route('/api/v1/device/today/:serialNumber')
   .get(controllers.device.getTodayDataAmountDevice);
 
-router.route('/api/v1/device/history/')
+router.route('/api/v1/device/history/:serialNumber')
   .get(controllers.device.getDeviceAmountHistory);
 
 module.exports = router;
