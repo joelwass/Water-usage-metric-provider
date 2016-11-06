@@ -19,6 +19,7 @@ describe('Device', function () {
     name: 'first device',
     usageOfDeviceToday: 1.0,
     usageOfDeviceTotal: 2.0,
+    serialNumber: '52sd',
   };
 
   var userEmail = 'joel@test.com';
@@ -62,7 +63,6 @@ describe('Device', function () {
       .send(device)
       .end(function (err, res) {
         var json = JSON.parse(res.text);
-        console.log(json);
         res.status.should.equal(200);
         json.success.should.equal(true);
         deviceId = json.results.id;
@@ -71,23 +71,41 @@ describe('Device', function () {
 
   });
 
-  it('should update device', function (done) {
+  it('should update device today count', function (done) {
 
     const newDevice = {
-      id: deviceId,
-      usageOfDeviceTotal: 3.0,
+      serialNumber: device.serialNumber,
+      usageOfDeviceToday: 3.0,
     };
 
     request(server)
-      .put('/api/v1/device/')
+      .post('/api/v1/device/today/increment/')
       .expect('Content-Type', /json/)
       .send(newDevice)
       .end(function (err, res) {
         var json = JSON.parse(res.text);
-        console.log(json);
         res.status.should.equal(200);
         json.success.should.equal(true);
-        json.results.usageOfDeviceTotal.should.equal(3.0);
+        done();
+      });
+
+  });
+
+  it('should update device total count', function (done) {
+
+    const newDevice = {
+      serialNumber: device.serialNumber,
+      usageOfDeviceTotal: 3.0,
+    };
+
+    request(server)
+      .post('/api/v1/device/total/increment')
+      .expect('Content-Type', /json/)
+      .send(newDevice)
+      .end(function (err, res) {
+        var json = JSON.parse(res.text);
+        res.status.should.equal(200);
+        json.success.should.equal(true);
         done();
       });
 
@@ -105,7 +123,6 @@ describe('Device', function () {
       .send(body)
       .end(function (err, res) {
         var json = JSON.parse(res.text);
-        console.log(json);
         res.status.should.equal(200);
         json.success.should.equal(true);
         done();

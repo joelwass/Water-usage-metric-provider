@@ -35,7 +35,6 @@ describe('User', function () {
       .send(reqBody)
       .end(function (err, res) {
         var json = JSON.parse(res.text);
-        console.log(json);
         res.status.should.equal(200);
         json.success.should.equal(true);
         json.results.email.should.equal(userEmail);
@@ -77,9 +76,7 @@ describe('User', function () {
       .send(reqBody)
       .end(function (err, res) {
         var json = JSON.parse(res.text);
-        console.log(json);
         res.status.should.equal(200);
-
         json.success.should.equal(true);
         auth = res.headers.auth;
         should.exist(auth);

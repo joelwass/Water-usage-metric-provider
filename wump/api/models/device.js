@@ -9,6 +9,10 @@ module.exports = function (sequelize, DataTypes) {
       defaultValue: DataTypes.UUIDV4,
       primaryKey: true
     },
+    serialNumber: {
+      type: DataTypes.STRING,
+      field: 'serialNumber',
+    },
     user_id: {
       type: DataTypes.STRING,
       field: 'user_id'
@@ -34,15 +38,18 @@ module.exports = function (sequelize, DataTypes) {
 
       getAllDevicesForUser: function(body) {
 
-        var params = { where: { 'user_id': body.user_id }};
+        var params = { where: { user_id: body.user_id }};
 
         return Device.findAll(params);
       },
 
-      updateDeviceById: function(body) {
+      updateDeviceTodayCount: function(body) {
 
-        var device = Device.find({ where: { 'id': body.id }});
-        return device.save(body);
+        return Device.update({ usageOfDeviceToday: body.usageOfDeviceToday }, { where: { serialNumber: body.serialNumber }});
+      },
+
+      updateDeviceAllTimeCount: function(body) {
+        return Device.update({ usageOfDeviceTotal: body.usageOfDeviceTotal }, { where: { serialNumber: body.serialNumber }});
       },
 
       deleteDeviceById: function(body) {

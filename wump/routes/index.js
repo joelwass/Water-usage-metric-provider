@@ -1,6 +1,7 @@
 var express = require('express');
 var router = express.Router();
 var controllers = require('../api/controllers');
+var middleware = require('./middleware');
 
 /* GET splash page. */
 router.get('/', function(req, res, next) {
@@ -18,7 +19,12 @@ router.route('/api/v1/login/')
 router.route('/api/v1/device/')
   .post(controllers.device.createDevice)
   .get(controllers.device.getAllDevices)
-  .put(controllers.device.updateDevice)
   .delete(controllers.device.deleteDevice);
+
+router.route('/api/v1/device/total/increment/')
+  .post(controllers.device.updateDeviceTotal);
+
+router.route('/api/v1/device/today/increment/')
+  .post(controllers.device.updateDeviceToday);
 
 module.exports = router;

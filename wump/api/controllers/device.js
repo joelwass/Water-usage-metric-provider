@@ -76,8 +76,9 @@ module.exports = {
 
   createDevice: function (req, res, next) {
 
-    var body = _.pick(req.body, ['user_id', 'name']);
-    if (_.keys(body).length != 2
+    console.log(req.body);
+    var body = _.pick(req.body, ['user_id', 'name', 'serialNumber']);
+    if (_.keys(body).length != 3
       || (typeof body.user_id != 'string')
       || (typeof body.name != 'string')
     ) {
@@ -157,7 +158,7 @@ module.exports = {
     }
 
     model.Device.getAllDevicesForUser(body)
-      .then(function (localUser) {
+      .then(function (localDevices) {
         return res.status(200).json({ success: true, results: localDevices });
       })
       .catch(function (err) {
@@ -165,16 +166,33 @@ module.exports = {
       });
   },
 
-  updateDevice: function (req, res, next) {
+  updateDeviceTotal: function (req, res, next) {
 
-    var body = _.pick(req.body, ['id']);
+    var body = _.pick(req.body, ['serialNumber']);
     if (_.keys(body).length != 1
-      || (typeof body.id != 'string')
+      || (typeof body.serialNumber != 'string')
     ) {
       return res.status(400).json({ success: false, message: helper.strings.InvalidParameters });
     }
 
-    model.Device.updateDeviceById(body)
+    model.Device.updateDeviceAllTimeCount(req.body)
+      .then(function (localDevice) {
+        return res.status(200).json({ success: true, results: localDevice });
+      })
+      .catch(function (err) {
+        return res.status(400).json({ success: false, message: err });
+      });
+  },
+
+  updateDeviceToday: function(req, res, next) {
+    var body = _.pick(req.body, ['serialNumber']);
+    if (_.keys(body).length != 1
+      || (typeof body.serialNumber != 'string')
+    ) {
+      return res.status(400).json({ success: false, message: helper.strings.InvalidParameters });
+    }
+
+    model.Device.updateDeviceTodayCount(req.body)
       .then(function (localDevice) {
         return res.status(200).json({ success: true, results: localDevice });
       })
