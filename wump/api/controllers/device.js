@@ -51,8 +51,8 @@ module.exports = {
   },
 
   addDeviceTransaction: function(req, res, next) {
-    var body = _.pick(req.body, ['serialNumber', 'timestamp', 'amount']);
-    if (_.keys(body).length != 3
+    var body = _.pick(req.body, ['serialNumber', 'amount']);
+    if (_.keys(body).length != 2
       || (typeof body.serialNumber != 'string')
     ) {
       return res.status(400).json({ success: false, message: helper.strings.InvalidParameters });
@@ -60,7 +60,7 @@ module.exports = {
 
     var newBody = {
       serialNumber: body.serialNumber,
-      dateString: new Date(body.timestamp).toDateString(),
+      dateString: new Date().toDateString(),
       amount: body.amount,
     };
 

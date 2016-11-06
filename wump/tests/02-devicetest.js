@@ -73,7 +73,6 @@ describe('Device', function () {
 
     const newTransaction = {
       serialNumber: device.serialNumber,
-      timestamp: new Date().getTime(),
       amount: 1.0,
     };
 
