@@ -8,72 +8,6 @@ var _ = require('lodash');
 
 module.exports = {
 
-  /**
-   * @swagger
-   * definition:
-   *   DeviceObject:
-   *     properties:
-   *       id:
-   *         type: string
-   *       user_id:
-   *         type: string
-   *       name:
-   *         type: string
-   *       usageOfDeviceTotal:
-   *         type: double
-   *       usageOfDeviceToday:
-   *         type: double
-   */
-
-  /**
-   * @swagger
-   * /device:
-   *   post:
-   *     tags:
-   *       - Device
-   *     description: This endpoint is used to create a device for a user
-   *       <table>
-   *       </table>
-   *     consumes:
-   *       - application/json
-   *     produces:
-   *       - application/json
-   *     parameters:
-   *     - name: body
-   *       description: The user id and name for the device
-   *       in: body
-   *       schema:
-   *         properties:
-   *           user_id:
-   *             type: string
-   *             required: true
-   *           name:
-   *             type: string
-   *             required: true
-   *         required:
-   *           - user_id
-   *           - name
-   *     responses:
-   *       200:
-   *         description: Returns the devices for a user
-   *         schema:
-   *           properties:
-   *             success:
-   *               type: boolean
-   *             result:
-   *               $ref: '#/definitions/DeviceObject'
-   *       400:
-   *         description: An error occured that we are aware of, and we
-   *           return a reason for the error that can be fixed
-   *         schema:
-   *           $ref: '#/definitions/error400ReturnDescription'
-   *       500:
-   *         description: Something we aren't aware of went wrong with our
-   *           server
-   *         schema:
-   *           $ref: '#/definitions/error400ReturnDescription'
-   */
-
   createDevice: function (req, res, next) {
 
     console.log(req.body);
@@ -84,9 +18,6 @@ module.exports = {
     ) {
       return res.status(400).json({ success: false, message: helper.strings.InvalidParameters });
     }
-
-    body.usageOfDeviceToday = 0.0;
-    body.usageOfDeviceTotal = 0.0;
 
     model.Device.createNewDevice(body)
       .then(function (localDevice) {
@@ -100,53 +31,6 @@ module.exports = {
         return res.status(400).json({ success: false, message: err });
       });
   },
-
-  /**
-   * @swagger
-   * /device:
-   *   get:
-   *     tags:
-   *       - Device
-   *     description: This endpoint is used to get devices for a user
-   *       <table>
-   *       </table>
-   *     consumes:
-   *       - application/json
-   *     produces:
-   *       - application/json
-   *     parameters:
-   *     - name: body
-   *       description: the user id associated with the devices
-   *       in: body
-   *       schema:
-   *         properties:
-   *           user_id:
-   *             type: string
-   *             required: true
-   *         required:
-   *           - user_id
-   *     responses:
-   *       200:
-   *         description: Returns success with an array of devices
-   *         schema:
-   *           properties:
-   *             success:
-   *               type: boolean
-   *             results:
-   *               type: array
-   *               items:
-   *                 $ref: '#/definitions/DeviceObject'
-   *       400:
-   *         description: An error occured that we are aware of, and we
-   *           return a reason for the error that can be fixed
-   *         schema:
-   *           $ref: '#/definitions/error400ReturnDescription'
-   *       500:
-   *         description: Something we aren't aware of went wrong with our
-   *           server
-   *         schema:
-   *           $ref: '#/definitions/error400ReturnDescription'
-   */
 
   getAllDevices: function (req, res, next) {
 
@@ -166,25 +50,30 @@ module.exports = {
       });
   },
 
-  updateDeviceTotal: function (req, res, next) {
-
-    var body = _.pick(req.body, ['serialNumber']);
-    if (_.keys(body).length != 1
+  addDeviceTransaction: function(req, res, next) {
+    var body = _.pick(req.body, ['serialNumber', 'timestamp', 'amount']);
+    if (_.keys(body).length != 3
       || (typeof body.serialNumber != 'string')
     ) {
       return res.status(400).json({ success: false, message: helper.strings.InvalidParameters });
     }
 
-    model.Device.updateDeviceAllTimeCount(req.body)
-      .then(function (localDevice) {
-        return res.status(200).json({ success: true, results: localDevice });
+    var newBody = {
+      serialNumber: body.serialNumber,
+      dateString: new Date(body.timestamp).toDateString(),
+      amount: body.amount,
+    };
+
+    model.Transaction.createNewTransaction(newBody)
+      .then(function (localTransaction) {
+        return res.status(200).json({ success: true, results: localTransaction });
       })
       .catch(function (err) {
         return res.status(400).json({ success: false, message: err });
       });
   },
 
-  updateDeviceToday: function(req, res, next) {
+  deleteTransactionFromDevice: function(req, res, next) {
     var body = _.pick(req.body, ['serialNumber']);
     if (_.keys(body).length != 1
       || (typeof body.serialNumber != 'string')
@@ -192,9 +81,65 @@ module.exports = {
       return res.status(400).json({ success: false, message: helper.strings.InvalidParameters });
     }
 
-    model.Device.updateDeviceTodayCount(req.body)
-      .then(function (localDevice) {
-        return res.status(200).json({ success: true, results: localDevice });
+    model.Transaction.deleteTransactionBySerialNumber(body)
+      .then(function () {
+        return res.status(200).json({ success: true });
+      })
+      .catch(function (err) {
+        return res.status(400).json({ success: false, message: err });
+      });
+  },
+
+  getDeviceAmountHistory: function(req, res, next) {
+    var body = _.pick(req.body, ['serialNumber']);
+    if (_.keys(body).length != 1
+      || (typeof body.serialNumber != 'string')
+    ) {
+      return res.status(400).json({ success: false, message: helper.strings.InvalidParameters });
+    }
+
+    model.Transaction.getHistoricalData(req.body)
+      .then(function (localHistory) {
+        var newResults = [];
+        var currentIndex = 0;
+        localHistory.forEach(function(currentValue, index, arr) {
+          if (index == 0) {
+            newResults = [{
+              dateString: localHistory[0].dataValues.dateString,
+              amount: localHistory[0].dataValues.amount,
+            }];
+          } else {
+            if (currentValue.dateString == newResults[currentIndex].dateString) {
+              newResults[currentIndex].amount += currentValue.amount;
+            } else {
+              var newobject = {
+                dateString: localHistory[index].dataValues.dateString,
+                amount: localHistory[index].dataValues.amount
+              };
+              newResults.push(newobject);
+            }
+          }
+          if (index+1 == arr.length) {
+            return res.status(200).json({ success: true, results: newResults });
+          }
+        });
+      })
+      .catch(function (err) {
+        return res.status(400).json({ success: false, message: err });
+      });
+  },
+
+  getTodayDataAmountDevice: function(req, res, next) {
+    var body = _.pick(req.body, ['serialNumber']);
+    if (_.keys(body).length != 1
+      || (typeof body.serialNumber != 'string')
+    ) {
+      return res.status(400).json({ success: false, message: helper.strings.InvalidParameters });
+    }
+
+    model.Transaction.getTodayDataAmount(req.body)
+      .then(function (localToday) {
+        return res.status(200).json({ success: true, results: localToday });
       })
       .catch(function (err) {
         return res.status(400).json({ success: false, message: err });

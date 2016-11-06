@@ -17,8 +17,6 @@ describe('Device', function () {
 
   var device = {
     name: 'first device',
-    usageOfDeviceToday: 1.0,
-    usageOfDeviceTotal: 2.0,
     serialNumber: '52sd',
   };
 
@@ -71,19 +69,21 @@ describe('Device', function () {
 
   });
 
-  it('should update device today count', function (done) {
+  it('should add device transaction', function (done) {
 
-    const newDevice = {
+    const newTransaction = {
       serialNumber: device.serialNumber,
-      usageOfDeviceToday: 3.0,
+      timestamp: new Date().getTime(),
+      amount: 1.0,
     };
 
     request(server)
-      .post('/api/v1/device/today/increment/')
+      .post('/api/v1/device/transaction/')
       .expect('Content-Type', /json/)
-      .send(newDevice)
+      .send(newTransaction)
       .end(function (err, res) {
         var json = JSON.parse(res.text);
+        console.log(json);
         res.status.should.equal(200);
         json.success.should.equal(true);
         done();
@@ -91,15 +91,34 @@ describe('Device', function () {
 
   });
 
-  it('should update device total count', function (done) {
+  it('should get today amount', function (done) {
 
     const newDevice = {
       serialNumber: device.serialNumber,
-      usageOfDeviceTotal: 3.0,
     };
 
     request(server)
-      .post('/api/v1/device/total/increment')
+      .get('/api/v1/device/today/')
+      .expect('Content-Type', /json/)
+      .send(newDevice)
+      .end(function (err, res) {
+        var json = JSON.parse(res.text);
+        console.log(json);
+        res.status.should.equal(200);
+        json.success.should.equal(true);
+        done();
+      });
+
+  });
+
+  it('should get total history', function (done) {
+
+    const newDevice = {
+      serialNumber: device.serialNumber,
+    };
+
+    request(server)
+      .get('/api/v1/device/history/')
       .expect('Content-Type', /json/)
       .send(newDevice)
       .end(function (err, res) {
@@ -123,6 +142,26 @@ describe('Device', function () {
       .send(body)
       .end(function (err, res) {
         var json = JSON.parse(res.text);
+        res.status.should.equal(200);
+        json.success.should.equal(true);
+        done();
+      });
+
+  });
+
+  it('should delete transaction', function (done) {
+
+    var body = {
+      serialNumber: device.serialNumber,
+    };
+
+    request(server)
+      .delete('/api/v1/device/transaction/')
+      .expect('Content-Type', /json/)
+      .send(body)
+      .end(function (err, res) {
+        var json = JSON.parse(res.text);
+        console.log(json);
         res.status.should.equal(200);
         json.success.should.equal(true);
         done();

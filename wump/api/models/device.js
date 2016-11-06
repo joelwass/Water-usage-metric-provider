@@ -20,15 +20,7 @@ module.exports = function (sequelize, DataTypes) {
     name: {
       type: DataTypes.STRING,
       field: 'name'
-    },
-    usageOfDeviceTotal: {
-      type: DataTypes.DOUBLE,
-      field: 'usageOfDeviceTotal'
-    },
-    usageOfDeviceToday: {
-      type: DataTypes.DOUBLE,
-      field: 'usageOfDeviceToday'
-    },
+    }
   }, {
     classMethods: {
       createNewDevice: function(body) {

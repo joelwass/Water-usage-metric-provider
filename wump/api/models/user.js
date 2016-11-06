@@ -5,7 +5,6 @@
 
 var cryptojs = require('crypto-js');
 var jwt = require('jsonwebtoken');
-var bcrypt = require('bcrypt');
 var Promise = require('bluebird');
 
 module.exports = function (sequelize, DataTypes) {
